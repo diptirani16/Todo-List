@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function Form() {
+export default function Form(props) {
+    const [note, setNote] = useState("");
+    
+    const submit = (e) => {
+        e.preventDefault();
+        if(!note) { 
+            alert("Note can't be empty!!");
+        }
+        else {
+            props.addTodo(note);
+            setNote("");
+        }
+    }
+
     return (
         <>
             <div class="container mx-auto px-4">
-                <form className="mt-8 space-y-6" action="#" method="POST">
+                <form className="mt-8 space-y-6" onSubmit={submit} action="#" method="POST">
                     <input type="hidden" name="remember" defaultValue="true" />
                     <div class="flex flex-row">
                     <div className="basis-5/6 px-1 rounded-md shadow-sm -space-y-px">
@@ -12,10 +25,11 @@ export default function Form() {
                             Add New Note
                         </label>
                         <input
-                            id="text"
-                            name="text"
+                            id="note"
+                            name="note"
                             type="text"
-                            autoComplete="text"
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)}
                             required
                             className="appearance-none rounded-none relative block
                   w-full px-3 py-2 border border-gray-300
